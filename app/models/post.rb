@@ -6,10 +6,24 @@ class Post < ActiveRecord::Base
 
   def categories_attributes=(category_attributes)
     category_attributes.values.each do |category_attribute|
-      if category_attribute["name"].present?
-      category = Category.find_or_create_by(category_attribute)
-      self.categories << category
-      end 
-    end
+      if category_attribute[:name].present?
+        category = Category.find_or_create_by(category_attribute)
+        if !self.categories.include?(category)
+          self.categories << category
+        end 
+      end
+    end  
   end 
+
+  # def categories_attributes=(categories_hashes)
+  #   categories_hashes.values.each do |category_attributes| 
+  #     if category_attribute[:name].present?
+  #       category = Category.find_or_create_by(name: category_attributes[:name])
+  #       if !self.categories.include?(category)
+  #         self.post_categories.build(:category => category)
+  #       end
+  #     end
+  #   end
+  # end
+
 end
